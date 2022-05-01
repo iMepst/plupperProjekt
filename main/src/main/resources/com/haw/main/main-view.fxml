@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane prefHeight="788.0" prefWidth="1260.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.haw.main.MainController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="715.0" minHeight="10.0" prefHeight="232.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="602.0" minHeight="10.0" prefHeight="556.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-style: solid none solid none;">
+            <children>
+                <Text layoutX="242.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to plupper!" textAlignment="CENTER" wrappingWidth="778.8500366210938">
+                    <font>
+                        <Font name="Montserrat Regular" size="66.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <children>
+                <TextField fx:id="nameTextField" alignment="CENTER" layoutX="659.0" layoutY="98.0" prefHeight="67.0" prefWidth="315.0" promptText="name" style="-fx-background-radius: 10px;">
+                    <font>
+                        <Font name="Montserrat Regular" size="23.0" />
+                    </font>
+                </TextField>
+                <Text layoutX="297.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your name:">
+                    <font>
+                        <Font name="Montserrat Regular" size="38.0" />
+                    </font>
+                </Text>
+                <Button fx:id="joinMeetingButton" alignment="CENTER" layoutX="162.0" layoutY="359.0" mnemonicParsing="false" onAction="#joinMeeting" style="-fx-background-color: #bcee68; -fx-background-radius: 10px;" text="JOIN MEETING" textAlignment="CENTER">
+                    <font>
+                        <Font name="Montserrat Regular" size="28.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <padding>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                    </padding>
+                </Button>
+                <Button alignment="CENTER" layoutX="816.0" layoutY="359.0" mnemonicParsing="false" style="-fx-background-color: #bcee68; -fx-background-radius: 10px;" text="CREATE MEETING" textAlignment="CENTER">
+                    <font>
+                        <Font name="Montserrat Regular" size="28.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                    </padding>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Text layoutX="136.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you a Guest?">
+                    <font>
+                        <Font name="Montserrat Regular" size="38.0" />
+                    </font>
+                </Text>
+                <Text layoutX="873.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Or a Host?">
+                    <font>
+                        <Font name="Montserrat Regular" size="38.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+    </children>
+</GridPane>
