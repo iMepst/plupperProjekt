@@ -75,7 +75,7 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <ListView fx:id="messageList" prefHeight="450.0" prefWidth="482.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
-            <TextField fx:id="messageText" layoutX="40.0" layoutY="455.0" promptText="Type a message..." AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="85.0" />
+            <TextField fx:id="messageText" layoutX="40.0" layoutY="455.0" onAction="#onSendMessageClick" promptText="Type a message..." AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="85.0" />
             <Button fx:id="sendButton" layoutX="851.0" layoutY="455.0" mnemonicParsing="false" onAction="#onSendMessageClick" text="Send" />
          </children>
       </AnchorPane>
