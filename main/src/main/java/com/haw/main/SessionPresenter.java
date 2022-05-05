@@ -1,5 +1,7 @@
 package com.haw.main;
 
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -58,8 +60,12 @@ public class SessionPresenter {
     public void receiveMessage(String msg){
         model.addMessage(msg);
     }
+
     public void bindModelToView(){
         messageList.setItems(model.getMessageList());
+        messageList.getItems().addListener(
+                (ListChangeListener<String>) change -> Platform.runLater( () -> messageList.scrollTo(messageList.getItems().size()))
+        );
     }
 
     public void setApp(PlupperApp app){
