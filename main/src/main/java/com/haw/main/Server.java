@@ -38,6 +38,7 @@ public class Server implements IConnection {
 
     public void stop(){
         isRunning = false;
+        System.out.println("Closing server");
     }
 
     public void sendMessage(String message){

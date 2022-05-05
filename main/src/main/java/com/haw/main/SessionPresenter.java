@@ -49,6 +49,12 @@ public class SessionPresenter {
         messageText.clear();
         network.sendMessage(msg);
     }
+
+    @FXML
+    protected void onCloseButtonClick(){
+        network.stop();
+    }
+
     public void receiveMessage(String msg){
         model.addMessage(msg);
     }

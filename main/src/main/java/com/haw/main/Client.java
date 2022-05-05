@@ -51,6 +51,7 @@ public class Client implements IConnection{
 
     public void stop(){
         isRunning = false;
+        System.out.println("Closing client");
     }
 
     public void sendMessage(String msg){
