@@ -3,14 +3,13 @@ package com.haw.main;
 import java.io.*;
 import java.net.Socket;
 
-public class Client {
+public class Client implements IConnection{
 
     private SessionPresenter controller;
     private String host;
     private int port;
     private Boolean isRunning;
 
-    private Socket socket;
     private BufferedWriter writer;
     private BufferedReader reader;
 
@@ -36,17 +35,22 @@ public class Client {
 
                     while (isRunning){
                         String msg = reader.readLine();
-                        System.out.println(msg);
+                        if (msg != null) {
+                            controller.receiveMessage(msg);
+                        }
                     }
-
 
                 }
                 catch (IOException e){
-
+                    e.printStackTrace();
                 }
             }
 
         }.start();
+    }
+
+    public void stop(){
+        isRunning = false;
     }
 
     public void sendMessage(String msg){
@@ -54,7 +58,7 @@ public class Client {
             @Override
             public void run(){
                 try {
-                    writer.write(msg);
+                    writer.write(msg + "\n");
                     writer.flush();
                     System.out.println("Message sent");
                 } catch (IOException e) {

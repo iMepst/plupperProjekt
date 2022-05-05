@@ -19,7 +19,6 @@ public class PlupperApp extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("main-view.fxml"));
             startScene = new Scene(loader.load(), 1200, 700);
-
             SessionPresenter controller = loader.<SessionPresenter>getController();
             controller.setApp(this);
             model = new SessionModel(controller);
