@@ -18,7 +18,7 @@ public class PlupperApp extends Application {
     public void start(Stage stage) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("main-view.fxml"));
-            startScene = new Scene(loader.load(), 1200, 700);
+            startScene = new Scene(loader.load());
             SessionPresenter controller = loader.<SessionPresenter>getController();
             controller.setApp(this);
             model = new SessionModel(controller);
@@ -27,8 +27,9 @@ public class PlupperApp extends Application {
             e.printStackTrace();
         }
         this.stage = stage;
-        this.stage.setTitle("Welcome to plupper");
+        this.stage.setTitle("plupper!");
         this.stage.setScene(startScene);
+        this.stage.setResizable(false);
         this.stage.show();
     }
 
@@ -36,14 +37,15 @@ public class PlupperApp extends Application {
 
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("host-view.fxml"));
-            sessionScene = new Scene(loader.load(), 1200, 700);
+            sessionScene = new Scene(loader.load());
 
             SessionPresenter controller = loader.<SessionPresenter>getController();
             controller.setApp(this);
             controller.setModel(model);
             controller.bindModelToView();
-            this.stage.setTitle("plupper!");
+            this.stage.setTitle("plupper! - Session");
             this.stage.setScene(sessionScene);
+            this.stage.setResizable(false);
 
         } catch (IOException e) {
             e.printStackTrace();
