@@ -14,6 +14,7 @@ public class PlupperApp extends Application {
     private Scene sessionScene;
     private SessionModel model;
 
+
     @Override
     public void start(Stage stage) throws IOException {
         try {
@@ -46,7 +47,6 @@ public class PlupperApp extends Application {
             this.stage.setTitle("plupper! - Session");
             this.stage.setScene(sessionScene);
             this.stage.setResizable(false);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
