@@ -17,7 +17,7 @@ public class Client implements IConnection{
     /* ---------------- Audio ---------------*/
     private static AudioInputStream ais;
     private static AudioFormat format;
-    private static float rate = 44100.0f;
+    private static float rate = 48000.0f;
 
 
     private static DataLine.Info dataLineInfo;
@@ -61,7 +61,7 @@ public class Client implements IConnection{
 
                     byte[] receiveData = new byte[4096];
 
-                    format = new AudioFormat(rate, 16, 2, true, false);
+                    format = new AudioFormat(rate, 16, 1, true, false);
 
                     dataLineInfo = new DataLine.Info(SourceDataLine.class, format);
                     sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);

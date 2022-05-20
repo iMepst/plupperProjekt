@@ -16,8 +16,8 @@ public class Server implements IConnection {
     private TargetDataLine line;
     private DatagramPacket dgp;
     private AudioFormat.Encoding encoding = AudioFormat.Encoding.PCM_SIGNED;
-    private float rate = 44100.0f;
-    private int channels = 2;
+    private float rate = 48000.0f;
+    private int channels = 1;
     private int sampleSize = 16;
     private boolean bigEndian = false;
     private InetAddress addr;
@@ -39,6 +39,7 @@ public class Server implements IConnection {
                 System.out.println("Server listening on port " + port);
                 /* ---------------- Audio ---------------*/
 
+                displayMixerInfo();
                 System.setProperty("java.net.preferIPv4Stack", "true");
                 AudioFormat format = new AudioFormat(encoding, rate, sampleSize, channels, (sampleSize/8) * channels, rate, bigEndian);
                 DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -120,13 +121,53 @@ public class Server implements IConnection {
                 line.read(data, 0, data.length);
                 dgp = new DatagramPacket(data, data.length, addr, port);
                 multiSocket.send(dgp);
-                //System.out.println("sending audio");
             }
 
         }catch(Exception e){
             e.printStackTrace();
         }
 
+    }
+
+    public static void displayMixerInfo()
+    {
+        Mixer.Info [] mixersInfo = AudioSystem.getMixerInfo();
+
+        System.out.println(mixersInfo[0]);
+
+        for (Mixer.Info mixerInfo : mixersInfo)
+        {
+            System.out.println("Mixer: " + mixerInfo.getName());
+
+            Mixer mixer = AudioSystem.getMixer(mixerInfo);
+
+            Line.Info [] sourceLineInfo = mixer.getSourceLineInfo();
+            for (Line.Info info : sourceLineInfo)
+            {
+                showLineInfo(info);
+            }
+
+            Line.Info [] targetLineInfo = mixer.getTargetLineInfo();
+            for (Line.Info info : targetLineInfo)
+            {
+                showLineInfo(info);
+            }
+        }
+    }
+    private static void showLineInfo(Line.Info lineInfo)
+    {
+        System.out.println("  " + lineInfo.toString());
+
+        if (lineInfo instanceof DataLine.Info)
+        {
+            DataLine.Info dataLineInfo = (DataLine.Info)lineInfo;
+
+            AudioFormat [] formats = dataLineInfo.getFormats();
+            for (AudioFormat format : formats)
+            {
+                System.out.println("    " + format.toString());
+            }
+        }
     }
     /* ---------------- Audio ---------------*/
 
