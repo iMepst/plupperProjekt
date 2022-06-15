@@ -102,9 +102,11 @@ public class Client implements IConnection{
             @Override
             public void run(){
                 try {
-                    writer.write(msg + "\n");
-                    writer.flush();
-                    System.out.println("Message sent");
+                    if(msg != ""){
+                        writer.write(msg + "\n");
+                        writer.flush();
+                        System.out.println("Message sent");
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

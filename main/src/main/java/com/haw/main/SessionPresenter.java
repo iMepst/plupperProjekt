@@ -23,7 +23,7 @@ public class SessionPresenter {
 
     @FXML
     protected void onStartServerClick(){
-        app.switchScene();
+        app.switchSceneHost();
         app.changeTitle("plupper - Host");
         SessionPresenter presenter = this;
         new Thread(() -> {
@@ -35,7 +35,7 @@ public class SessionPresenter {
 
     @FXML
     protected void onStartClientClick(){
-        app.switchScene();
+        app.switchSceneGuest();
         app.changeTitle("plupper - Guest");
         SessionPresenter presenter = this;
         new Thread(() -> {

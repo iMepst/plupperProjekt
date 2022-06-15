@@ -39,7 +39,7 @@ public class Server implements IConnection {
                 System.out.println("Server listening on port " + port);
                 /* ---------------- Audio ---------------*/
 
-                displayMixerInfo();
+                //displayMixerInfo();
                 System.setProperty("java.net.preferIPv4Stack", "true");
                 AudioFormat format = new AudioFormat(encoding, rate, sampleSize, channels, (sampleSize/8) * channels, rate, bigEndian);
                 DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
