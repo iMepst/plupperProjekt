@@ -147,6 +147,10 @@ public class Client implements IConnection{
             }
         }.start();
     }
+
+    public void micSwitch(){
+        return;
+    }
     /* ---------------- Audio ---------------*/
 
 

@@ -53,6 +53,11 @@ public class SessionPresenter {
     }
 
     @FXML
+    protected void onMuteClick() {
+        network.micSwitch();
+    }
+
+    @FXML
     protected void onCloseButtonClick(){
         network.stop();
     }

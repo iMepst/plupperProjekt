@@ -117,10 +117,12 @@ public class Server implements IConnection {
     public void sendAudio(MulticastSocket multiSocket, byte[] data){
 
         try{
-            while (micOpen){
-                line.read(data, 0, data.length);
-                dgp = new DatagramPacket(data, data.length, addr, port);
-                multiSocket.send(dgp);
+            while (true){
+                if(this.micOpen){
+                    line.read(data, 0, data.length);
+                    dgp = new DatagramPacket(data, data.length, addr, port);
+                    multiSocket.send(dgp);
+                }
             }
 
         }catch(Exception e){
@@ -168,6 +170,11 @@ public class Server implements IConnection {
                 System.out.println("    " + format.toString());
             }
         }
+    }
+
+    public void micSwitch(){
+        this.micOpen = !micOpen;
+        System.out.println(this.micOpen);
     }
     /* ---------------- Audio ---------------*/
 
