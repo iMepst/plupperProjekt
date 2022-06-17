@@ -10,7 +10,8 @@ public class SessionPresenter {
 
     private PlupperApp app;
     private SessionModel model;
-    private static IConnection network;
+    private IMessageService msgservice;
+    private IService service;
 
     @FXML
     private ListView<String> messageList;
@@ -38,11 +39,7 @@ public class SessionPresenter {
         service.start();
         app.switchSceneGuest(service);
         app.changeTitle("plupper - Guest");
-        SessionPresenter presenter = this;
-        new Thread(() -> {
-            network = new Client(presenter);
-            network.start();
-        }).start();
+
         model.setUser(new User(enterNameText.getText()));
     }
 
@@ -50,7 +47,8 @@ public class SessionPresenter {
     protected void onSendMessageClick() {
         String msg = messageText.getText();
         messageText.clear();
-        network.sendMessage(msg);
+        service.sendMessage(msg);
+
     }
 
     @FXML
@@ -61,7 +59,7 @@ public class SessionPresenter {
 
     @FXML
     protected void onCloseButtonClick(){
-        network.stop();
+        service.stop();
     }
 
     public void receiveMessage(String msg){
