@@ -34,13 +34,14 @@ public class PlupperApp extends Application {
         this.stage.show();
     }
 
-    public void switchSceneHost(){
+    public void switchSceneHost(IService service) {
 
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("host-view.fxml"));
             sessionScene = new Scene(loader.load());
 
             SessionPresenter controller = loader.<SessionPresenter>getController();
+            controller.setService(service);
             controller.setApp(this);
             controller.setModel(model);
             controller.bindModelToView();
@@ -52,13 +53,14 @@ public class PlupperApp extends Application {
         }
     }
 
-    public void switchSceneGuest(){
+    public void switchSceneGuest(IService service) {
 
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("guest-view.fxml"));
             sessionScene = new Scene(loader.load());
 
             SessionPresenter controller = loader.<SessionPresenter>getController();
+            controller.setService(service);
             controller.setApp(this);
             controller.setModel(model);
             controller.bindModelToView();
@@ -70,7 +72,7 @@ public class PlupperApp extends Application {
         }
     }
 
-    public void changeTitle(String title){
+    public void changeTitle(String title) {
         this.stage.setTitle(title);
     }
 

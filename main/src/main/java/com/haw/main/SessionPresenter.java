@@ -23,19 +23,20 @@ public class SessionPresenter {
 
     @FXML
     protected void onStartServerClick(){
-        app.switchSceneHost();
+        service = new Server(this);
+        service.start();
+        app.switchSceneHost(service);
         app.changeTitle("plupper - Host");
-        SessionPresenter presenter = this;
-        new Thread(() -> {
-            network = new Server(presenter);
-            network.start();
-        }).start();
+
+        System.out.println(service);
         model.setUser(new User(enterNameText.getText()));
     }
 
     @FXML
     protected void onStartClientClick(){
-        app.switchSceneGuest();
+        service = new Client(this);
+        service.start();
+        app.switchSceneGuest(service);
         app.changeTitle("plupper - Guest");
         SessionPresenter presenter = this;
         new Thread(() -> {
@@ -54,7 +55,8 @@ public class SessionPresenter {
 
     @FXML
     protected void onMuteClick() {
-        network.micSwitch();
+        service.micSwitch();
+        //server.micSwitch();
     }
 
     @FXML
@@ -80,4 +82,7 @@ public class SessionPresenter {
         this.model = model;
     }
 
+    public void setService(IService service) {
+        this.service = service;
+    }
 }
