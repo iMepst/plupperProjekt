@@ -48,13 +48,11 @@ public class SessionPresenter {
         String msg = messageText.getText();
         messageText.clear();
         service.sendMessage(msg);
-
     }
 
     @FXML
     protected void onMuteClick() {
         service.micSwitch();
-        //server.micSwitch();
     }
 
     @FXML

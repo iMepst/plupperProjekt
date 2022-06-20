@@ -10,12 +10,6 @@ public class Server implements IService {
     private int port;
     private LinkedList<BufferedReader> readers;
     private LinkedList<BufferedWriter> writers;
-    private SessionPresenter presenter;
-    private Boolean isRunning;
-
-    private IMessageService messageService;
-    private IConnectionService connectionService;
-    public IAudioService audioService;
 
     public Server(SessionPresenter presenter) {
         this.port = 50005;
@@ -28,9 +22,11 @@ public class Server implements IService {
     public void start(){
         new Thread(() -> {
             System.out.println("Starting server");
-            messageService = new MessageService(isRunning, writers, readers, presenter);
-            connectionService = new ConnectionServer(port, isRunning, writers, readers, messageService);
-            connectionService.start();
+            messageService = new MessageService(isRunning, presenter, writers, this);
+
+            connectionService = new ConnectionService(port, isRunning, readers, writers, messageService);
+            connectionService.listen();
+
             audioService = new AudioService(isRunning, port);
             audioService.start();
         }).start();
@@ -63,11 +59,6 @@ public class Server implements IService {
 
     @Override
     public void sendMessage(String msg) {
-        return;
-    }
-
-    @Override
-    public void receiveMessage(BufferedReader reader) {
-        return;
+       messageService.broadcastMessage(msg);
     }
 }
