@@ -37,7 +37,6 @@ public class SessionPresenter {
         service = new Client(this);
         service.start();
         app.switchSceneGuest(service);
-        app.changeTitle("plupper - Guest");
         model.setUser(new User(enterNameText.getText()));
     }
 

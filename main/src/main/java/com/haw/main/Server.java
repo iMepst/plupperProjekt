@@ -29,7 +29,7 @@ public class Server implements IService {
     public void start(){
         new Thread(() -> {
             System.out.println("Starting server");
-            messageService = new MessageService(isRunning, presenter, writers, this);
+            messageService = new MessageService(isRunning, writers, this);
 
             connectionService = new ConnectionService(port, isRunning, readers, writers, messageService);
             connectionService.listen();

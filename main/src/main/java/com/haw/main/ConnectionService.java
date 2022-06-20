@@ -86,8 +86,6 @@ public class ConnectionService {
         }).start();
     }
 
-
-
     public void disconnectFromServer(){
         //trennt die Verbindung mit dem Server
         isRunning = false;

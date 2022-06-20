@@ -12,7 +12,6 @@ public class MessageService {
 
     public MessageService(Boolean isRunning, SessionPresenter presenter, LinkedList writers, IService service) {
         this.isRunning = isRunning;
-        this.presenter = presenter;
         this.writers = writers;
         this.service = service;
     }
@@ -31,30 +30,6 @@ public class MessageService {
         }).start();
     }
 
-    public void sendMessage(String message, BufferedWriter writer) {
-        new Thread(() -> {
-            try {
-                System.out.println("Message sent");
-                writer.write(message + "\n");
-                writer.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-//    public void receive(){
-//        new Thread( () -> {
-//            while(isRunning) {
-//                try {
-//                    BufferedReader reader = incomingConnections.take();
-//                    receiveMessage(reader);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-//    }
 
     public void receiveMessage(BufferedReader reader) {
         new Thread(() -> {
@@ -71,7 +46,6 @@ public class MessageService {
             }
         }).start();
     }
-
 }
 
 
