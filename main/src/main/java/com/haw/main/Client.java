@@ -45,6 +45,7 @@ public class Client implements IService {
 
         public void stop() {
                 System.out.println("Closing client");
+                connectionService.disconnectFromServer();
                 isRunning = false;
 
                 writers.forEach( w -> {

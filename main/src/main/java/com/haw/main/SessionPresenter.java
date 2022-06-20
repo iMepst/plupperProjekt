@@ -14,7 +14,6 @@ public class SessionPresenter {
 
     @FXML
     private ListView<String> messageList;
-
     @FXML
     private TextField enterNameText;
 
@@ -42,8 +41,7 @@ public class SessionPresenter {
 
     @FXML
     protected void onSendMessageClick() {
-        String msg = messageText.getText();
-        msg = model.getUser().getName() + ": " + msg;
+        String msg = model.getUser().getName() + ": " + messageText.getText();
         messageText.clear();
         service.sendMessage(msg);
     }
@@ -56,6 +54,7 @@ public class SessionPresenter {
     @FXML
     protected void onCloseButtonClick(){
         service.stop();
+        Platform.exit();
     }
 
     public void receiveMessage(String msg){

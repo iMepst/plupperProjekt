@@ -40,8 +40,9 @@ public class Server implements IService {
     }
 
     public void stop() {
-        isRunning = false;
         System.out.println("Closing server");
+        connectionService.disconnectFromServer();
+        isRunning = false;
 
         writers.forEach( w -> {
             try {
