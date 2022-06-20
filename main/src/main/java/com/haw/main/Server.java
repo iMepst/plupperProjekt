@@ -30,12 +30,12 @@ public class Server implements IService {
             audioService = new AudioService(isRunning, port);
             audioService.start();
         }).start();
-
     }
 
     public void stop() {
         isRunning = false;
         System.out.println("Closing server");
+
         writers.forEach( w -> {
             try {
                 w.close();

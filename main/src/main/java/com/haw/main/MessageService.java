@@ -1,8 +1,6 @@
 package com.haw.main;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 
 public class MessageService {
@@ -19,6 +17,20 @@ public class MessageService {
         //receiveMessage(readers.getFirst());
     }
 
+    public void broadcastMessage(String message) {
+        new Thread(() -> {
+            for (BufferedWriter writer : writers) {
+                try {
+                    System.out.println("Message broadcasted");
+                    writer.write(message + "\n");
+                    writer.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
     public void sendMessage(String message) {
         new Thread(() -> {
             try {
@@ -29,7 +41,6 @@ public class MessageService {
                 e.printStackTrace();
             }
         }).start();
-        presenter.receiveMessage(message);
     }
 
     public void receiveMessage(BufferedReader reader) {
@@ -39,8 +50,7 @@ public class MessageService {
                     String msg = reader.readLine();
                     if (msg != null) {
                         System.out.println("Message received");
-                        sendMessage(msg);
-                        presenter.receiveMessage(msg);
+                        service.receiveMessage(msg);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -48,6 +58,7 @@ public class MessageService {
             }
         }).start();
     }
+
 }
 
 

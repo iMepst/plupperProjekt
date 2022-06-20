@@ -14,9 +14,7 @@ public class Client implements IService, IMessageService {
 
         private LinkedList<BufferedReader> readers;
         private LinkedList<BufferedWriter> writers;
-        public IMessageService messageService;
-        private IConnectionService connectionService;
-        public AudioService audioService;
+
 
         public Client(SessionPresenter presenter) {
                 this.host = "localhost";
@@ -31,17 +29,35 @@ public class Client implements IService, IMessageService {
         public void start() {
                 new Thread(() -> {
                         System.out.println("Starting client");
-                        messageService = new MessageService(isRunning, writers, readers, presenter);
-                        connectionService = new ConnectionClient(port, isRunning, writers, readers, host);
-                        connectionService.start();
+                        messageService = new MessageService(isRunning, presenter, writers, this);
+
+                        connectionService = new ConnectionService(host, port, isRunning, readers, writers, messageService);
+                        connectionService.connectToServer(port, host);
+
                         audioService = new AudioService(isRunning, port);
                         audioService.receiveAudio();
                 }).start();
         }
 
         public void stop() {
-                isRunning = false;
                 System.out.println("Closing client");
+                isRunning = false;
+
+                writers.forEach( w -> {
+                        try {
+                                w.close();
+                        } catch (IOException e) {
+                                throw new RuntimeException(e);
+                        }
+                });
+
+                readers.forEach(w -> {
+                        try {
+                                w.close();
+                        } catch (IOException e) {
+                                throw new RuntimeException(e);
+                        }
+                });
         }
 
         @Override

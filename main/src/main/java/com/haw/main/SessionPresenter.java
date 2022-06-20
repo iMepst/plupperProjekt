@@ -39,7 +39,6 @@ public class SessionPresenter {
         service.start();
         app.switchSceneGuest(service);
         app.changeTitle("plupper - Guest");
-
         model.setUser(new User(enterNameText.getText()));
     }
 
