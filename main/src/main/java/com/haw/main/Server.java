@@ -7,10 +7,10 @@ import java.util.LinkedList;
 
 public class Server implements IService {
 
-    private SessionPresenter presenter;
+    private IPresenter presenter;
     private MessageService messageService;
     private ConnectionService connectionService;
-    private IAudioService audioService;
+    private AudioService audioService;
 
     private Boolean isRunning;
     private int port;
@@ -74,5 +74,6 @@ public class Server implements IService {
     public void receiveMessage(String msg){
         sendMessage(msg);
         presenter.receiveMessage(msg);
+
     }
 }

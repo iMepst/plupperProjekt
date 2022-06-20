@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-public class SessionPresenter {
+public class SessionPresenter implements IPresenter {
 
     private PlupperApp app;
     private SessionModel model;
@@ -16,7 +16,6 @@ public class SessionPresenter {
     private ListView<String> messageList;
     @FXML
     private TextField enterNameText;
-
     @FXML
     private TextField messageText;
 
@@ -25,9 +24,6 @@ public class SessionPresenter {
         service = new Server(this);
         service.start();
         app.switchSceneHost(service);
-        app.changeTitle("plupper - Host");
-
-        System.out.println(service);
         model.setUser(new User(enterNameText.getText()));
     }
 
@@ -68,14 +64,17 @@ public class SessionPresenter {
         );
     }
 
-    public void setApp(PlupperApp app){
+    public void setup(PlupperApp app, SessionModel model){
         this.app = app;
-    }
-    public void setModel(SessionModel model) {
         this.model = model;
     }
 
-    public void setService(IService service) {
+    public void setup(PlupperApp app, SessionModel model, IService service){
+        this.app = app;
+        this.model = model;
         this.service = service;
+        bindModelToView();
     }
+
+
 }

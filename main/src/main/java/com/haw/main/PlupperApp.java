@@ -10,47 +10,55 @@ import java.io.IOException;
 public class PlupperApp extends Application {
 
     private Stage stage;
-    private Scene startScene;
-    private Scene sessionScene;
     private SessionModel model;
 
 
     @Override
     public void start(Stage stage) throws IOException {
+
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("main-view.fxml"));
-            startScene = new Scene(loader.load());
-            SessionPresenter controller = loader.<SessionPresenter>getController();
-            controller.setApp(this);
-            model = new SessionModel(controller);
-            controller.setModel(model);
+            Scene startScene = new Scene(loader.load());
+            SessionPresenter presenter = loader.<SessionPresenter>getController();
+
+            model = new SessionModel();
+            presenter.setup(this, model);
+
+
+            this.stage = stage;
+            this.stage.setTitle("plupper!");
+            this.stage.setScene(startScene);
+            this.stage.setResizable(false);
+
+
+            this.stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.stage = stage;
-        this.stage.setTitle("plupper!");
-        this.stage.setScene(startScene);
-        this.stage.setResizable(false);
-        this.stage.show();
+
+    }
+
+
+    public void switchScene(String resource, String title, IService service){
+        try {
+            FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource(resource));
+            Scene sessionScene = new Scene(loader.load());
+            SessionPresenter presenter = loader.<SessionPresenter>getController();
+
+            presenter.setup(this, model, service);
+
+            this.stage.setTitle(title);
+            this.stage.setScene(sessionScene);
+            this.stage.setResizable(false);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void switchSceneHost(IService service) {
-
-        try {
-            FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("host-view.fxml"));
-            sessionScene = new Scene(loader.load());
-
-            SessionPresenter controller = loader.<SessionPresenter>getController();
-            controller.setService(service);
-            controller.setApp(this);
-            controller.setModel(model);
-            controller.bindModelToView();
-            this.stage.setTitle("plupper! - Session");
-            this.stage.setScene(sessionScene);
-            this.stage.setResizable(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        switchScene("host-view.fxml", "plupper - Host", service);
     }
 
     public void switchSceneGuest(IService service) {

@@ -5,7 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.*;
 
-public class AudioService implements IAudioService {
+public class AudioService {
     private final int port;
     private TargetDataLine line;
     private DatagramPacket dgp;
@@ -65,7 +65,7 @@ public class AudioService implements IAudioService {
         }).start();
     }
 
-    @Override
+
     public void stop() {
 
     }

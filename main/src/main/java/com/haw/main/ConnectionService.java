@@ -7,15 +7,15 @@ import java.util.LinkedList;
 
 public class ConnectionService {
 
-    int port;
-    String host;
-    Boolean isRunning;
+    private int port;
+    private String host;
+    private Boolean isRunning;
 
-    ServerSocket serverSocket;
-    LinkedList<BufferedReader> reader;
-    LinkedList<BufferedWriter> writer;
+    private ServerSocket serverSocket;
+    private LinkedList<BufferedReader> reader;
+    private LinkedList<BufferedWriter> writer;
 
-    MessageService messageService;
+    private MessageService messageService;
 
     public ConnectionService(String host, int port, Boolean isRunning, LinkedList<BufferedReader> reader, LinkedList<BufferedWriter> writer, MessageService messageService){
         this.port = port;
@@ -76,13 +76,10 @@ public class ConnectionService {
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 this.writer.add(writer);
                 this.reader.add(reader);
-
                 messageService.receiveMessage(reader);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }).start();
     }
 
@@ -97,7 +94,6 @@ public class ConnectionService {
                 throw new RuntimeException(e);
             }
         });
-
         reader.forEach(w -> {
             try {
                 w.close();

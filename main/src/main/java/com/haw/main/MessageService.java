@@ -6,18 +6,17 @@ import java.util.LinkedList;
 public class MessageService {
 
     private Boolean isRunning;
-    private SessionPresenter presenter;
     private LinkedList<BufferedWriter> writers;
     private IService service;
 
-    public MessageService(Boolean isRunning, SessionPresenter presenter, LinkedList writers, IService service) {
+    public MessageService(Boolean isRunning, LinkedList writers, IService service) {
         this.isRunning = isRunning;
         this.writers = writers;
         this.service = service;
     }
 
     public void broadcastMessage(String message) {
-        new Thread(() -> {
+        Thread t = new Thread(() -> {
             for (BufferedWriter writer : writers) {
                 try {
                     System.out.println("Message broadcasted");
@@ -25,14 +24,23 @@ public class MessageService {
                     writer.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    try {
+                        writer.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
 
     public void receiveMessage(BufferedReader reader) {
-        new Thread(() -> {
+        Thread t = new Thread() {
+        @Override
+        public void run () {
             while (isRunning) {
                 try {
                     String msg = reader.readLine();
@@ -41,10 +49,14 @@ public class MessageService {
                         service.receiveMessage(msg);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    isRunning = false;
+                    service.stop();
+                    break;
                 }
             }
-        }).start();
+        }};
+        t.setDaemon(true);
+        t.start();
     }
 }
 

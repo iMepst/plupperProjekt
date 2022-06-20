@@ -4,15 +4,12 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-
 public class SessionModel {
 
-    private SessionPresenter controller;
     private ObservableList<String> messages;
     private User user;
 
-    public SessionModel(SessionPresenter controller){
-        this.controller = controller;
+    public SessionModel(){
         this.messages = FXCollections.observableArrayList();
     }
 
