@@ -37,7 +37,7 @@ public class SessionPresenter implements IPresenter {
 
     @FXML
     protected void onSendMessageClick() {
-        if(messageText.getText() != ""){
+        if(! messageText.getText().equals("")){
             String msg = model.getUser().getName() + ": " + messageText.getText();
             messageText.clear();
             service.sendMessage(msg);
@@ -72,8 +72,7 @@ public class SessionPresenter implements IPresenter {
     }
 
     public void setup(PlupperApp app, SessionModel model, IService service){
-        this.app = app;
-        this.model = model;
+        setup(app, model);
         this.service = service;
         bindModelToView();
     }

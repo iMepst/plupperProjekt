@@ -19,7 +19,6 @@ public class Server implements IService {
 
     public Server(SessionPresenter presenter) {
         this.presenter = presenter;
-
         this.isRunning = true;
         this.port = 50005;
         this.readers = new LinkedList<>();

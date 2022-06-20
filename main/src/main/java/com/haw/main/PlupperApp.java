@@ -4,22 +4,20 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class PlupperApp extends Application {
 
     private Stage stage;
     private SessionModel model;
-
+    private SessionPresenter presenter;
 
     @Override
     public void start(Stage stage) throws IOException {
-
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("main-view.fxml"));
             Scene startScene = new Scene(loader.load());
-            SessionPresenter presenter = loader.<SessionPresenter>getController();
+            presenter = loader.<SessionPresenter>getController();
 
             model = new SessionModel();
             presenter.setup(this, model);
@@ -41,10 +39,15 @@ public class PlupperApp extends Application {
 
 
     public void switchScene(String resource, String title, IService service){
+        /**
+         * @param resource Represents the path to the FXML file
+         * @param title The title to be shown in the new stage
+         * @param service A reference to the networking service to hand to the new presenter
+         */
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource(resource));
             Scene sessionScene = new Scene(loader.load());
-            SessionPresenter presenter = loader.<SessionPresenter>getController();
+            presenter = loader.<SessionPresenter>getController();
 
             presenter.setup(this, model, service);
 
