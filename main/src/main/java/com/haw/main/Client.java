@@ -1,13 +1,17 @@
 package com.haw.main;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.LinkedList;
-import javax.sound.sampled.*;
 
-public class Client implements IService, IMessageService {
+public class Client implements IService {
 
         private SessionPresenter presenter;
+        private MessageService messageService;
+        private ConnectionService connectionService;
+        private AudioService audioService;
+
         private String host;
         private int port;
         private Boolean isRunning;
@@ -21,8 +25,8 @@ public class Client implements IService, IMessageService {
                 this.port = 50005;
                 this.isRunning = true;
                 this.presenter = presenter;
-                writers = new LinkedList<BufferedWriter>();
-                readers = new LinkedList<BufferedReader>();
+                writers = new LinkedList<>();
+                readers = new LinkedList<>();
 
         }
 
@@ -65,13 +69,12 @@ public class Client implements IService, IMessageService {
                 return;
         }
 
-        @Override
+
         public void sendMessage(String msg) {
-                messageService.sendMessage(msg);
+                messageService.broadcastMessage(msg);
         }
 
-        @Override
-        public void receiveMessage(BufferedReader reader) {
-                messageService.receiveMessage(reader);
+        public void receiveMessage(String msg) {
+                presenter.receiveMessage(msg);
         }
 }

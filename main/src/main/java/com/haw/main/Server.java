@@ -7,16 +7,23 @@ import java.util.LinkedList;
 
 public class Server implements IService {
 
+    private SessionPresenter presenter;
+    private MessageService messageService;
+    private ConnectionService connectionService;
+    private IAudioService audioService;
+
+    private Boolean isRunning;
     private int port;
     private LinkedList<BufferedReader> readers;
     private LinkedList<BufferedWriter> writers;
 
     public Server(SessionPresenter presenter) {
+        this.presenter = presenter;
+
+        this.isRunning = true;
         this.port = 50005;
         this.readers = new LinkedList<>();
         this.writers = new LinkedList<>();
-        this.presenter = presenter;
-        this.isRunning = true;
     }
 
     public void start(){
@@ -60,5 +67,11 @@ public class Server implements IService {
     @Override
     public void sendMessage(String msg) {
        messageService.broadcastMessage(msg);
+    }
+
+    @Override
+    public void receiveMessage(String msg){
+        sendMessage(msg);
+        presenter.receiveMessage(msg);
     }
 }

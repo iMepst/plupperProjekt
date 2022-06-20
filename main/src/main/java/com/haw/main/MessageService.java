@@ -7,14 +7,14 @@ public class MessageService {
 
     private Boolean isRunning;
     private SessionPresenter presenter;
+    private LinkedList<BufferedWriter> writers;
+    private IService service;
 
-    public MessageService(Boolean isRunning, LinkedList<BufferedWriter> writers, LinkedList<BufferedReader> readers, SessionPresenter presenter) {
+    public MessageService(Boolean isRunning, SessionPresenter presenter, LinkedList writers, IService service) {
         this.isRunning = isRunning;
-        this.writers = writers;
-        this.readers = readers;
         this.presenter = presenter;
-
-        //receiveMessage(readers.getFirst());
+        this.writers = writers;
+        this.service = service;
     }
 
     public void broadcastMessage(String message) {
@@ -31,7 +31,7 @@ public class MessageService {
         }).start();
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(String message, BufferedWriter writer) {
         new Thread(() -> {
             try {
                 System.out.println("Message sent");
@@ -42,6 +42,19 @@ public class MessageService {
             }
         }).start();
     }
+
+//    public void receive(){
+//        new Thread( () -> {
+//            while(isRunning) {
+//                try {
+//                    BufferedReader reader = incomingConnections.take();
+//                    receiveMessage(reader);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+//    }
 
     public void receiveMessage(BufferedReader reader) {
         new Thread(() -> {

@@ -10,7 +10,6 @@ public class SessionPresenter {
 
     private PlupperApp app;
     private SessionModel model;
-    private IMessageService msgservice;
     private IService service;
 
     @FXML
@@ -45,6 +44,7 @@ public class SessionPresenter {
     @FXML
     protected void onSendMessageClick() {
         String msg = messageText.getText();
+        msg = model.getUser().getName() + ": " + msg;
         messageText.clear();
         service.sendMessage(msg);
     }
