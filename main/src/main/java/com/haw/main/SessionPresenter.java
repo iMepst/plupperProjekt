@@ -37,9 +37,11 @@ public class SessionPresenter implements IPresenter {
 
     @FXML
     protected void onSendMessageClick() {
-        String msg = model.getUser().getName() + ": " + messageText.getText();
-        messageText.clear();
-        service.sendMessage(msg);
+        if(messageText.getText() != ""){
+            String msg = model.getUser().getName() + ": " + messageText.getText();
+            messageText.clear();
+            service.sendMessage(msg);
+        }
     }
 
     @FXML
