@@ -15,6 +15,11 @@ public class PlupperApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        /**
+         * Load the FXML file and set the stage
+         * @param stage TThe stage is the window that the application is displayed in
+         * @param model The model is the data that is displayed in the window
+         **/
         this.stage = stage;
         model = new SessionModel();
 
@@ -27,12 +32,21 @@ public class PlupperApp extends Application {
     }
 
     private void setStage(String title, Scene scene){
+        /**
+         * Set the title and scene of the stage
+         * @param title the title of the stage
+         * @param scene the scene of the stage
+         **/
         stage.setTitle(title);
         stage.setScene(scene);
         stage.setResizable(false);
     }
 
     private void loadScene(String resource){
+        /**
+         * Load the FXML file and create the scene
+         * @param resource the name of the FXML file
+         * */
         try {
             FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource(resource));
             scene = new Scene(loader.load());
