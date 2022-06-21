@@ -1,8 +1,12 @@
 package com.haw.main;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.LinkedList;
-
+/**
+ *Message service responsible for sending and receiving messages
+ */
 public class MessageService {
 
     private Boolean isRunning;
@@ -16,6 +20,10 @@ public class MessageService {
     }
 
     public void broadcastMessage(String message) {
+        /**
+         * method for starting a thread that sends a message to all connected sockets in the writers list
+         * @param message Message to be sent
+         */
         Thread t = new Thread(() -> {
             for (BufferedWriter writer : writers) {
                 try {
@@ -38,18 +46,21 @@ public class MessageService {
 
 
     public void receiveMessage(BufferedReader reader) {
+        /**
+         * method for starting a thread for each reader which reads the incoming messages
+         * @param reader The buffered reader from which to read in messages
+         */
         Thread t = new Thread(() -> {
-            while (isRunning) {
-                try {
+            try {
+                while (isRunning) {
                     String msg = reader.readLine();
                     if (msg != null) {
                         System.out.println("Message received");
                         service.receiveMessage(msg);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    break;
                 }
+            } catch (IOException e) {
+                System.out.println("Disconnect");
             }
         });
         t.setDaemon(true);

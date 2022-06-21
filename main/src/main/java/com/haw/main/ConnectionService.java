@@ -46,7 +46,6 @@ public class ConnectionService {
                     establishConnection(ssocket);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
             }
         });
         t.setDaemon(true);

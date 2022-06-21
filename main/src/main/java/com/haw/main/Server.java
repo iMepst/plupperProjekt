@@ -26,7 +26,6 @@ public class Server implements IService {
     }
 
     public void start(){
-       // new Thread(() -> {
             System.out.println("Starting server");
             messageService = new MessageService(isRunning, writers, this);
 
@@ -35,7 +34,6 @@ public class Server implements IService {
 
             audioService = new AudioService(isRunning, port);
             audioService.start();
-        //}).start();
     }
 
     public void stop() {
