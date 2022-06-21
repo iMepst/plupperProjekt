@@ -16,21 +16,17 @@ public class AudioService {
     private boolean bigEndian = false;
     private InetAddress addr;
     private Boolean micOpen = true;
-    private Boolean isRunning = true;
+    private Boolean isRunning;
 
-    private static AudioInputStream ais;
     private static AudioFormat format;
 
     private static DataLine.Info dataLineInfo;
     private static SourceDataLine sourceDataLine;
-
     private boolean speakerOn = true;
 
     MulticastSocket mSocket;
     DatagramPacket receivePacket;
     ByteArrayInputStream baiss;
-
-
 
 
     public AudioService(Boolean isRunning, int port) {
@@ -65,11 +61,6 @@ public class AudioService {
         });
         t.setDaemon(true);
         t.start();
-    }
-
-
-    public void stop() {
-
     }
 
     public void sendAudio(MulticastSocket multiSocket, byte[] data) {
@@ -127,7 +118,7 @@ public class AudioService {
             while (speakerOn) {
                 try {
                     mSocket.receive(receivePacket);
-                    ais = new AudioInputStream(baiss, format, receivePacket.getLength());
+                    //AudioInputStream ais = new AudioInputStream(baiss, format, receivePacket.getLength());
                     toSpeaker(receivePacket.getData());
                 } catch (Exception e) {
                     e.printStackTrace();
