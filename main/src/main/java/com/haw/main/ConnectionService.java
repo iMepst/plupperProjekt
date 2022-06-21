@@ -1,9 +1,18 @@
 package com.haw.main;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
+
+/**
+ * Connection service class responsible for building and destroying connections
+ */
 
 public class ConnectionService {
 
@@ -35,7 +44,9 @@ public class ConnectionService {
     }
 
     public void listen(){
-        //wartet auf eingehende Verbindungen auf dem Port
+        /**
+         * starts a thread that listens for connections on the port specified by the object's field
+         */
         Thread t = new Thread(() -> {
             try {
                 ServerSocket serverSocket = new ServerSocket(port);
@@ -53,7 +64,9 @@ public class ConnectionService {
     }
 
     public void connect(){
-        //verbindet sich mit Server über den Port
+        /**
+         * connects to the host and port specified by the object's fields
+         */
         try {
             Socket csocket = new Socket(host, port);
             this.socket = csocket;
@@ -65,8 +78,11 @@ public class ConnectionService {
     }
 
     public void establishConnection(Socket socket){
-        //erstellt einen neuen Thread, der den Socket verwendet
-        //erstellt Reader und Writer
+        /**
+         * starts a thread that establishes the connection by building the stream objects for reading and writing
+         * and starting the receiver thread of the message service object
+         * @param socket Socket from which to build the stream objects
+         */
         Thread t = new Thread( () -> {
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -83,7 +99,9 @@ public class ConnectionService {
     }
 
     public void disconnect(){
-        //trennt die Verbindung mit dem Server
+        /**
+         * method for disconnecting by closing the socket and the readers and writers
+         */
         System.out.println("Shutting down connection service");
         writer.forEach( w -> {
             try {

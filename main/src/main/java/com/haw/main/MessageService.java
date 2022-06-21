@@ -5,7 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 /**
- *Message service responsible for sending and receiving messages
+ *Message service class responsible for sending and receiving messages
  */
 public class MessageService {
 
