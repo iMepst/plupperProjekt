@@ -1,5 +1,7 @@
 package com.haw.main;
-
+/**
+ * data class representing a user (host or guest)
+ */
 public class User {
 
     private String name;

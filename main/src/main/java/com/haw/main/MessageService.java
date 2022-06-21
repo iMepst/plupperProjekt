@@ -38,9 +38,7 @@ public class MessageService {
 
 
     public void receiveMessage(BufferedReader reader) {
-        Thread t = new Thread() {
-        @Override
-        public void run () {
+        Thread t = new Thread(() -> {
             while (isRunning) {
                 try {
                     String msg = reader.readLine();
@@ -49,12 +47,11 @@ public class MessageService {
                         service.receiveMessage(msg);
                     }
                 } catch (IOException e) {
-                    isRunning = false;
-                    service.stop();
+                    e.printStackTrace();
                     break;
                 }
             }
-        }};
+        });
         t.setDaemon(true);
         t.start();
     }

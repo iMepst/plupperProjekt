@@ -26,7 +26,7 @@ public class Server implements IService {
     }
 
     public void start(){
-        new Thread(() -> {
+       // new Thread(() -> {
             System.out.println("Starting server");
             messageService = new MessageService(isRunning, writers, this);
 
@@ -35,29 +35,13 @@ public class Server implements IService {
 
             audioService = new AudioService(isRunning, port);
             audioService.start();
-        }).start();
+        //}).start();
     }
 
     public void stop() {
         System.out.println("Closing server");
-        connectionService.disconnectFromServer();
         isRunning = false;
-
-        writers.forEach( w -> {
-            try {
-                w.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        readers.forEach(w -> {
-            try {
-                w.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        connectionService.disconnect();
     }
 
     public void micSwitch(){
@@ -73,6 +57,5 @@ public class Server implements IService {
     public void receiveMessage(String msg){
         sendMessage(msg);
         presenter.receiveMessage(msg);
-
     }
 }

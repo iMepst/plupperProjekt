@@ -11,18 +11,18 @@ public class ConnectionService {
     private String host;
     private Boolean isRunning;
 
-    private ServerSocket serverSocket;
+    private Closeable socket;
     private LinkedList<BufferedReader> reader;
     private LinkedList<BufferedWriter> writer;
 
     private MessageService messageService;
 
     public ConnectionService(String host, int port, Boolean isRunning, LinkedList<BufferedReader> reader, LinkedList<BufferedWriter> writer, MessageService messageService){
+        this.host = host;
         this.port = port;
         this.isRunning = isRunning;
         this.reader = reader;
         this.writer = writer;
-        this.host = host;
         this.messageService = messageService;
     }
 
@@ -32,22 +32,17 @@ public class ConnectionService {
         this.reader = reader;
         this.writer = writer;
         this.messageService = messageService;
-        try {
-            serverSocket = new ServerSocket(port);
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
     }
 
     public void listen(){
         //wartet auf eingehende Verbindungen auf dem Port
-
         Thread t = new Thread(() -> {
             try {
+                ServerSocket serverSocket = new ServerSocket(port);
+                this.socket = serverSocket;
                 while (isRunning) {
                     Socket ssocket = serverSocket.accept();
-                    System.out.println("Connection from " + ssocket.getRemoteSocketAddress());
+                    System.out.println("Incoming connection from " + ssocket.getRemoteSocketAddress());
                     establishConnection(ssocket);
                 }
             } catch (IOException e) {
@@ -58,11 +53,12 @@ public class ConnectionService {
         t.start();
     }
 
-    public void connectToServer(int port, String host){
+    public void connect(){
         //verbindet sich mit Server über den Port
         try {
             Socket csocket = new Socket(host, port);
-            System.out.println("Client connected to " + csocket.getRemoteSocketAddress());
+            this.socket = csocket;
+            System.out.println("Connected to " + csocket.getRemoteSocketAddress());
             establishConnection(csocket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,23 +83,29 @@ public class ConnectionService {
         t.start();
     }
 
-    public void disconnectFromServer(){
+    public void disconnect(){
         //trennt die Verbindung mit dem Server
-        isRunning = false;
         System.out.println("Shutting down connection service");
         writer.forEach( w -> {
             try {
                 w.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
         reader.forEach(w -> {
             try {
                 w.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
+        if (socket != null){
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

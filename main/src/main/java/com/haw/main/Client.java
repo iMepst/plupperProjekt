@@ -27,7 +27,6 @@ public class Client implements IService {
                 this.presenter = presenter;
                 writers = new LinkedList<>();
                 readers = new LinkedList<>();
-
         }
 
         @Override
@@ -37,7 +36,7 @@ public class Client implements IService {
                         messageService = new MessageService(isRunning, writers, this);
 
                         connectionService = new ConnectionService(host, port, isRunning, readers, writers, messageService);
-                        connectionService.connectToServer(port, host);
+                        connectionService.connect();
 
                         audioService = new AudioService(isRunning, port);
                         audioService.receiveAudio();
@@ -47,24 +46,8 @@ public class Client implements IService {
         @Override
         public void stop() {
                 System.out.println("Closing client");
-                connectionService.disconnectFromServer();
                 isRunning = false;
-
-                writers.forEach( w -> {
-                        try {
-                                w.close();
-                        } catch (IOException e) {
-                                throw new RuntimeException(e);
-                        }
-                });
-
-                readers.forEach(w -> {
-                        try {
-                                w.close();
-                        } catch (IOException e) {
-                                throw new RuntimeException(e);
-                        }
-                });
+                connectionService.disconnect();
         }
 
         @Override
