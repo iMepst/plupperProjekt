@@ -9,55 +9,49 @@ import java.io.IOException;
 public class PlupperApp extends Application {
 
     private Stage stage;
-    private SessionModel model;
+    private Scene scene;
     private SessionPresenter presenter;
+    private SessionModel model;
 
     @Override
     public void start(Stage stage) throws IOException {
-        try {
-            FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource("main-view.fxml"));
-            Scene startScene = new Scene(loader.load());
-            presenter = loader.<SessionPresenter>getController();
+        this.stage = stage;
+        model = new SessionModel();
 
-            model = new SessionModel();
-            presenter.setup(this, model);
+        loadScene("main-view.fxml");
+        presenter.setup(this, model);
+        setStage("plupper!", scene);
 
-
-            this.stage = stage;
-            this.stage.setTitle("plupper!");
-            this.stage.setScene(startScene);
-            this.stage.setResizable(false);
-
-
-            this.stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.stage.show();
 
     }
 
+    private void setStage(String title, Scene scene){
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.setResizable(false);
+    }
 
-    public void switchScene(String resource, String title, IService service){
+    private void loadScene(String resource){
+        try {
+            FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource(resource));
+            scene = new Scene(loader.load());
+            presenter = loader.<SessionPresenter>getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void switchScene(String resource, String title, IService service){
         /**
          * @param resource Represents the path to the FXML file
          * @param title The title to be shown in the new stage
          * @param service A reference to the networking service to hand to the new presenter
          */
-        try {
-            FXMLLoader loader = new FXMLLoader(PlupperApp.class.getResource(resource));
-            Scene sessionScene = new Scene(loader.load());
-            presenter = loader.<SessionPresenter>getController();
 
-            presenter.setup(this, model, service);
-
-            this.stage.setTitle(title);
-            this.stage.setScene(sessionScene);
-            this.stage.setResizable(false);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadScene(resource);
+        setStage(title, scene);
+        presenter.setup(this, model, service);
     }
 
     public void switchSceneHost(IService service) {

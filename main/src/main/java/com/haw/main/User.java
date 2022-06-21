@@ -1,7 +1,5 @@
 package com.haw.main;
 
-import java.io.Serializable;
-
 public class User {
 
     private String name;
