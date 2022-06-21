@@ -43,7 +43,7 @@ public class ConnectionService {
     public void listen(){
         //wartet auf eingehende Verbindungen auf dem Port
 
-        new Thread(() -> {
+        Thread t = new Thread(() -> {
             try {
                 while (isRunning) {
                     Socket ssocket = serverSocket.accept();
@@ -53,7 +53,9 @@ public class ConnectionService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
     public void connectToServer(int port, String host){
@@ -70,7 +72,7 @@ public class ConnectionService {
     public void establishConnection(Socket socket){
         //erstellt einen neuen Thread, der den Socket verwendet
         //erstellt Reader und Writer
-        new Thread( () -> {
+        Thread t = new Thread( () -> {
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -80,13 +82,15 @@ public class ConnectionService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
     public void disconnectFromServer(){
         //trennt die Verbindung mit dem Server
         isRunning = false;
-        System.out.println("Closing server");
+        System.out.println("Shutting down connection service");
         writer.forEach( w -> {
             try {
                 w.close();

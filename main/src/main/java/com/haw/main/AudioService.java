@@ -39,7 +39,7 @@ public class AudioService {
     }
 
     public void start() {
-        new Thread(() -> {
+        Thread t = new Thread(() -> {
             try {
                 System.setProperty("java.net.preferIPv4Stack", "true");
                 AudioFormat format = new AudioFormat(encoding, rate, sampleSize, channels, (sampleSize / 8) * channels, rate, bigEndian);
@@ -62,7 +62,9 @@ public class AudioService {
                 }
             } catch (IOException | LineUnavailableException e) { /* LineUnavailableException für Audio*/
             }
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
 
@@ -121,7 +123,7 @@ public class AudioService {
             e.printStackTrace();
 
         }
-        new Thread(() -> {
+        Thread t = new Thread(() -> {
             while (speakerOn) {
                 try {
                     mSocket.receive(receivePacket);
@@ -131,7 +133,9 @@ public class AudioService {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
     public void micSwitch() {
