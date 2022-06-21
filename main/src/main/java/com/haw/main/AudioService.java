@@ -43,7 +43,7 @@ public class AudioService {
                 if (!AudioSystem.isLineSupported(info)) {
                     System.out.println("Data line not supported!");
                 }
-                //Server
+
                 line = (TargetDataLine) AudioSystem.getLine(info);
                 line.open(format);
                 line.start();
@@ -51,7 +51,6 @@ public class AudioService {
 
                 addr = InetAddress.getLocalHost();
                 MulticastSocket multiSocket = new MulticastSocket();
-
 
                 while (isRunning) {
                     sendAudio(multiSocket, data);
@@ -88,19 +87,15 @@ public class AudioService {
     }
 
     public void receiveAudio() {
-        System.setProperty("java.net.preferIPv4Stack", "true");
-
         try{
             InetAddress group = InetAddress.getLocalHost();
             MulticastSocket mSocket = new MulticastSocket(port);
             this.mSocket = mSocket;
-            System.out.println(group);
             joinGroup(group);
 
             byte[] receiveData = new byte[4096];
 
-            format = new AudioFormat(rate, 16, 1, true, false);
-
+            format = new AudioFormat(rate, sampleSize, channels, true, bigEndian);
             dataLineInfo = new DataLine.Info(SourceDataLine.class, format);
             sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
             sourceDataLine.open(format);
@@ -112,13 +107,11 @@ public class AudioService {
             this.baiss = baiss;
         }catch(IOException | LineUnavailableException e){
             e.printStackTrace();
-
         }
         Thread t = new Thread(() -> {
             while (speakerOn) {
                 try {
                     mSocket.receive(receivePacket);
-                    //AudioInputStream ais = new AudioInputStream(baiss, format, receivePacket.getLength());
                     toSpeaker(receivePacket.getData());
                 } catch (Exception e) {
                     e.printStackTrace();
